@@ -3,6 +3,7 @@
 import app from "./server.js" // 2.1 to use the app functionalities (express, cors)
 import mongodb from "mongodb"
 import dotenv from "dotenv" // 2.2 to acces the env variables
+import PlanetsDAO from "./dao/planetsDAO.js"; // 5.0 import planetsDAO file to access the data
 dotenv.config(); // 2.2 to load the env variables
 
 const MongoClient = mongodb.MongoClient; // 2.3 access the client
@@ -22,6 +23,7 @@ MongoClient.connect( // 2.5 connect to MongoDBCLient
     process.exit(1);
 })
 .then(async client => { // 2.9 after we connected the database and check for errors then we start our web server after connecting to DB by listening to the port we assigned
+    await PlanetsDAO.injectDB(client); // 5.1 get reference from the planets collection
     app.listen(port, () => {
         console.log(`You are listening on port ${port}`);
     })
